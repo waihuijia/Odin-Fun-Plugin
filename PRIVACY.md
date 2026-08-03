@@ -1,6 +1,6 @@
 # Odin Fun Plugin 隐私权政策 / Privacy Policy
 
-最后更新 / Last updated: 2026-07-24
+最后更新 / Last updated: 2026-08-03
 
 ---
 
@@ -17,17 +17,26 @@ Odin Fun Plugin(以下简称“本扩展”)尊重并保护您的隐私。本政
 **云同步(可选)**
 若您主动注册并登录云同步账号,您的备注数据(用户 ID、用户名、备注文本)将通过加密连接(HTTPS/WSS)传输并存储于云端数据库(Supabase),仅用于您本人的跨设备同步;服务端通过行级安全策略保证每个账号只能访问自己的数据。退出登录即停止同步;本地数据始终保留。交易缓存等派生数据始终仅存本地,不上云。
 
+**众包标记次数(自 1.1.2 起)**
+启用云同步后,本扩展会在用户名旁显示某个 odin 账号“已被多少个账号备注过”的数字。请注意这项数据的双向性:
+
+- **您看到的**:仅是一个计数。云端聚合函数只返回数字,**任何人的备注内容与账号身份都不会提供给您**,您无法据此得知具体是谁做了备注。
+- **您贡献的**:您为某人写下的备注会使他人看到的该计数 +1。**只贡献这个“1”,不含您的备注文本、邮箱或任何身份信息。**
+
+该计数仅对已登录云同步的用户开放,匿名调用会被服务端拒绝。未登录时本扩展既不请求也不显示它。若您不希望自己的备注被计入,请不要启用云同步——未同步的本地备注不参与任何统计。
+
 **网络请求**
 为实现功能,本扩展会向以下接口发起请求:
 - api.odin.fun:读取 odin.fun 上公开的持有人交易活动,用于计算并展示交易统计。
 - api.coingecko.com:读取比特币价格,用于将数值换算为美元显示。
-- *.supabase.co:仅在您登录云同步后,用于同步您的备注数据。
+- api.btc74.com:云同步的实际接入端点(反向代理至 Supabase),仅在您登录后使用,用于同步您的备注数据以及查询上述标记次数。
+- *.supabase.co:云同步的备用直连端点,用途同上。
 
 **数据共享**
-本扩展不会出售、转移或与任何第三方共享您的数据。
+本扩展不会出售、转移或与任何第三方共享您的数据。上述“众包标记次数”仅向其他用户暴露聚合数字,不构成备注内容或身份信息的共享。
 
 **权限**
-本扩展申请 storage 权限(在本地保存备注与设置)、alarms 权限(云同步的定时兜底拉取),以及在 odin.fun 上运行内容脚本所需的主机权限(https://odin.fun/*)和云同步所需的主机权限(https://*.supabase.co/*)。
+本扩展申请 storage 权限(在本地保存备注与设置)、alarms 权限(云同步的定时兜底拉取),以及在 odin.fun 上运行内容脚本所需的主机权限(https://odin.fun/*)和云同步所需的主机权限(https://api.btc74.com/* 与 https://*.supabase.co/*)。
 
 **联系方式**
 如有疑问,请通过 https://x.com/rex00618 联系。
@@ -47,17 +56,26 @@ Remarks, language preference, and display settings you create are stored by defa
 **Cloud Sync (optional)**
 If you voluntarily sign up and log in to a cloud sync account, your remarks data (user ID, username, remark text) is transmitted over encrypted connections (HTTPS/WSS) and stored in a cloud database (Supabase), solely for syncing across your own devices; row-level security ensures each account can only access its own data. Signing out stops syncing; your local data is always retained. Derived data such as trading caches always stays local and is never uploaded.
 
+**Crowd-sourced remark counts (since 1.1.2)**
+With cloud sync enabled, the extension displays, next to a username, how many accounts have written a remark for that odin account. This data flows both ways, so note both directions:
+
+- **What you see**: a count and nothing more. The server-side aggregate function returns only a number; **no one's remark text or account identity is ever disclosed to you**, and you cannot tell who wrote a remark.
+- **What you contribute**: a remark you write increases the count others see by one. **Only that "1" is contributed — never your remark text, your email, or any identifying information.**
+
+The count is available only to users signed in to cloud sync; anonymous calls are rejected by the server. While signed out, the extension neither requests nor displays it. If you would rather your remarks not be counted, do not enable cloud sync — local remarks that never sync take part in no aggregate.
+
 **Network requests**
 To provide its features, the extension makes requests to the following endpoints:
 - api.odin.fun: to read public holder trading activity on odin.fun and compute/display trading statistics.
 - api.coingecko.com: to read the Bitcoin price for USD-conversion display.
-- *.supabase.co: only after you log in to cloud sync, to sync your remarks data.
+- api.btc74.com: the endpoint cloud sync actually connects to (a reverse proxy to Supabase), used only after you log in, both to sync your remarks and to look up the counts described above.
+- *.supabase.co: the direct fallback endpoint for cloud sync, same purposes.
 
 **Data sharing**
-The extension does not sell, transfer, or share your data with any third party.
+The extension does not sell, transfer, or share your data with any third party. The crowd-sourced counts above expose only an aggregate number to other users and do not constitute sharing of remark content or identity.
 
 **Permissions**
-The extension requests the "storage" permission (to save remarks and settings locally), the "alarms" permission (periodic fallback pull for cloud sync), the host access needed to run its content script on odin.fun (https://odin.fun/*), and the host access needed for cloud sync (https://*.supabase.co/*).
+The extension requests the "storage" permission (to save remarks and settings locally), the "alarms" permission (periodic fallback pull for cloud sync), the host access needed to run its content script on odin.fun (https://odin.fun/*), and the host access needed for cloud sync (https://api.btc74.com/* and https://*.supabase.co/*).
 
 **Contact**
 For questions, contact https://x.com/rex00618.
